@@ -1,0 +1,79 @@
+[tauri-app-builder] ================================================================================================================
+
+Project Overview
+Name: Tauri app builder
+Description: 
+The Tauri Web app client builder project aims to create a Dockerfile that compile Tauri lightweight web apps (clients) for Windows.  
+
+Project requirements:
+- Create a watertight "recipe" for building lightweight web app clients that can be easily compiled using a Dockerfile.
+    - The build process should be done in isolated environment
+    - Docker container host OS during the build process is not limited to Windows
+    - The output of build process should be Windows executable file
+ 
+The project's primary goal is to create a watertight "recipe" for building lightweight web app clients that can be easily
+compiled using a Dockerfile. Builded container should be as "factory of executables": tauri-app source as input and builded 
+Windows executable as output.
+
+Objectives: 
+- Create Docekrfile that builds a web application for Windows using Tauri framework
+- The project build process will not involve using online services for compilation or assuming that the host OS is Windows
+
+Deliverables:
+- A Dockerfile for compiling the lightweight web app using Tauri framework 
+- Documentation on how to build the "factory" container and build tauri client using that "factory"
+- The source code for the project
+
+
+Functional Requirements:
+- The system should be able to compile a lightweight web app client using a Dockerfile despite the host OS.
+
+Non-functional Requirements:
+- The system should be built in isolated environment using Dockerfile
+- The build process should not use online services for compilation and not assume that the host OS is Windows.
+
+3. Design
+
+Dockerfile produces an image based on the rust:alpine base image will. The build tools, cross-compiler and targets 
+for applications for the windows_x86_64 platform are installed during image build process.
+
+The actual tauri application compilation is done during container execution.
+
+The interaction of the host OS with the container will occur through the shared volume mechanism. The folder with the source 
+code of the application (input) and the folder with the compilation result (output).
+
+[Worklog]
+
+I need to pack all the steps for setting up the rust environment and the build process of the executable file 
+from the source code of the tauri application in a Dockerfile. 
+
+The main difficulty is setting up a crossplatform toolchain for compiling and building inside an isolated container environment. 
+Since I settled on the MinGW compiler and linker, i need to add them to the environment before starting the actual tauri app build process. 
+After that build environment for tauri app compilation will be encapsulated inside the image. That build environment will be used
+on container execution and will build tauri app like any other Rust application.
+
+
+Known limitations:
+[WebView2Loader.dll]
+
+A binary library WebView2Loader from the WebView2 SDK need to be used, either the DLL WebView2Loader.dll or the static library 
+WebView2LoaderStatic.lib. 
+
+This brings some complexities:
+* When using the msvc toolchain, the static library is used. 
+* When using the gnu toolchain, the static library does not seem to work so the WebView2Loader.dll DLL is used. 
+    You need to make sure that the DLL can be loaded at runtime, e.g. by putting it alongside the built exe files.
+
+Docker linux containers should be used because rust docker images does not have windows/amd64 support.
+Dockerfile builder stage moved rust: alpine dokcer image
+
+This build process should be divided into 2 steps:
+1. Preparing the build environment for tauri applications
+2. Direct assembly of the tauri application itself
+
+
+
+================================================================================================================================
+
+docker build --build-arg DEFAULT_URL=https://neti.ee -f Dockerfile -t afanasjev/tauri-app-builder:latest .
+docker run -v E:\Work\JaanTallinn\tauri-web-client\tauri-app-vanilla\release:/app/release afanasjev/tauri-app-builder:latest
