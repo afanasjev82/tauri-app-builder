@@ -18,17 +18,17 @@ This Dockerfile is designed to allow cross-compilation of Rust projects for Wind
 2. Build the image:
 
    ```bash
-   docker build -t tauri-builder .
+   docker build -t tauri-app-builder .
    ```
 
-   This will create a Docker image named `tauri-builder` that includes the necessary tools for cross-compiling Rust projects for Windows.
+   This will create a Docker image named `tauri-app-builder` that includes the necessary tools for cross-compiling Rust projects for Windows.
 
 3. Usage:
 
-   To use the `tauri-builder` image, you'll need to mount a volume containing your Rust project's source code. You can do this by running the following command:
+   To use the `tauri-app-builder` image, you'll need to mount a volume containing your Rust project's source code. You can do this by running the following command:
 
    ```bash
-   docker run --rm -v /path/to/tauri/project:/app tauri-builder /path/to/tauri/project/src-tauri
+   docker run --rm -v /path/to/tauri/project:/app tauri-app-builder /path/to/tauri/project/src-tauri
    ```
 
    This command will run a container using the rust-cross-compile image and mount the `/path/to/tauri/project` directory as a volume inside the container. The src-tauri directory inside your project will be set as the working directory, and the cargo build command will be executed with the --release flag and the target set to x86_64-pc-windows-gnu. The resulting binary will be placed in the `/path/to/tauri/project/build` directory, which is also mounted as a volume.
