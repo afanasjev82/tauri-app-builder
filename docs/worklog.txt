@@ -78,23 +78,31 @@ Windows 11 (x64) enviroment is already tested by using it as development environ
 possible cross-platform compilation issues. 
 
 I will test on WSL, Ubuntu and MacOS to ensure that there will be no issues with the building process. Due to high complexity of
-build process, this will take some time on my old overclocked Intel i7 4790K + 32gb ram rig. At this time I'am writing "initial 
+build process, this will take some time on my old overclocked Intel i7 4790K with 32gb of ram machine. At this time I'am writing "initial 
 thoughts" document for other tast projects.
 
 During WSL runs I noticed that common Tauri rust crates are downloaded evrytime I'm building executeble using builder docker image.
 This is due to isolated environment paradigma used in doker containers.
 
 
-[Windows]
-Build: [+] Building 616.0s (11/11) FINISHED
-Compile: 
+[Windows] 
+Build: [+] Building 71.1s (11/11) FINISHED
+Compile: Finished release [optimized] target(s) in 19m 08s
 
 [WSL]
-Build: [+] Building 47.8s (11/11) FINISHED
-Compile: Finished release [optimized] target(s) in 7m 00s
+Build: [+] Building 67.7s (11/11) FINISHED
+Compile: Finished release [optimized] target(s) in 8m 32s
 
+[Ubuntu 18.04]
+Build: [+] Building 78.6s (11/11) FINISHED
+Compile: Finished release [optimized] target(s) in 11m 38s
 
+[macOS]
+Build: [+] Building 78.6s (11/11) FINISHED
+Compile: Finished release [optimized] target(s) in 11m 38s
 
+I have MacOS and Linux installed on my old MacBook Pro, late 2013, with 2.4Ghz Dual-core i5 and 8gb of ram. And we have a pretty 
+good results compared to Windows machine which should be much faster.
 
 
 [Limitations]
