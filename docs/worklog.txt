@@ -71,9 +71,42 @@ This build process should be divided into 2 steps:
 1. Preparing the build environment for tauri applications
 2. Direct assembly of the tauri application itself
 
+[Testing]
 
+I need to test the Dockerfile build image process alongside the executable compilation process using [tauri-app-builder] container
+Windows 11 (x64) enviroment is already tested by using it as development environment. I've done it intentionally, to exclude 
+possible cross-platform compilation issues. 
+
+I will test on WSL, Ubuntu and MacOS to ensure that there will be no issues with the building process. Due to high complexity of
+build process, this will take some time on my old overclocked Intel i7 4790K + 32gb ram rig. At this time I'am writing "initial 
+thoughts" document for other tast projects.
+
+During WSL runs I noticed that common Tauri rust crates are downloaded evrytime I'm building executeble using builder docker image.
+This is due to isolated environment paradigma used in doker containers.
+
+
+[Windows]
+Build: [+] Building 616.0s (11/11) FINISHED
+Compile: 
+
+[WSL]
+Build: [+] Building 47.8s (11/11) FINISHED
+Compile: Finished release [optimized] target(s) in 7m 00s
+
+
+
+
+
+[Limitations]
+* To be possible to pre-configure rust build targets during image build using "--build-arg" flag, possible workaround is to 
+pre-install all possible targets, but is's ugly and costly by final image size.
 
 ================================================================================================================================
 
-docker build --build-arg DEFAULT_URL=https://neti.ee -f Dockerfile -t afanasjev/tauri-app-builder:latest .
+[TODO]
++ 1. Dockerfile: use rust:alpine image
+2. video of bulding image ang compiling tauri example
+3. cleanup worklog
+
+docker build -t afanasjev/tauri-app-builder:latest .
 docker run -v E:\Work\JaanTallinn\tauri-web-client\tauri-app-vanilla\release:/app/release afanasjev/tauri-app-builder:latest
