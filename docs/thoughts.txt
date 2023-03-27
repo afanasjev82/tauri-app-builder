@@ -1,0 +1,155 @@
+[Initial thoughts]
+
+==================================================================================================================
+
+Project 1: webclient
+
+This problem could be naively solved by building a "one-time" container for one specific application, but it would 
+be more appropriate to divide it into 2 sub-tasks:
+
+1. Need to build a container that will take care of all the tasks associated with compiling the code into an 
+executable file. That is, it will be in the role of a universal Tauri application assembler. Since the main code base of the Tauri framework is Rust, this gives us the opportunity to build other applications under Rust.
+2. Need to create an example application that wraps the content of a web resource into a desktop application, 
+the path of which the application receives through the console when it starts. Also, the state of the application (cache, position and size of the main program window, etc.) should be stored in the home directory of the user who launched the application, for Windows it is \Users\<CurrentUserName> and it is available under the "homepath" environment variable.
+
+I think it's best to solve this problem, it will be the path with the "least unknowns", namely:
+0. Familiarize with Tauri, as well as a little about rust cargo
+1. Install the Tauri application development and build environment
+2. Wrap the process of installing the development environment in a separate docker image. Most likely there will be
+ 	problems with cross-compilation of applications for Windows.
+
+Thus, it will be possible to isolate the process of developing and building Tauri / Rust applications. And also it will be 
+possible to divide the task into adjacent, but still independent tasks.
+
+I have quite a lot of experience in developing web applications and the ability to wrap my JS / TS code has been of interest to me for a long time.
+I also have several C/C++ projects in different areas. Therefore, Electron and Rust are on my priority list.
+for studying. That's why I found this project useful and stick with it.
+
+
+==================================================================================================================
+
+Project 2: passpoems
+
+Mnemonic code invented to be memorizable to humans. But 24 words without context is hard to remember too. 
+The main idea is to reorder BIP39 mnemonic phrases to create "mnemonic poem" that are easier to remember.
+
+I will suggest to make additional logic layer on to of mnemonic phrases and group them into sentence or group of sentences into poems. 
+The ordering would be done using neural language model to more humanable. Order of words is important to regenerate initial mnemonic 
+word from the "mnemonic poem". The order of mnemonics will be encoded into word and the appended to the end of the mnemonic poem.
+Tht word will be encoded and decoded the same way as other mnemonic words. Or for more convenience we could encode initial
+mnemonic order into not only 1 word from BEP39 directory, but into multiple words creating additional poem row.
+
+Changing the order of the final mnemonic phrases and then saving that ordering for reversing the operation 
+should not introduce any additional risks to the security of the underlying BIP39 algorithm, 
+as long as the original ordering is also preserved. It is used only for improving memorization of those 24 words, 
+adding context to them without changing thw words itself. It's additional step into decode/encode process and cryptographic
+entropy will not suffer.
+
+The language model will take responsibilities for grouping initial mnemonics words into rows of poem just by reordering.
+
+If we talk about this problem in the context of "Project 2: Poems", then the solution to the problem is comparable to the 
+idea described above. It is possible to take a group of words and change the order of these words to a more natural for a person, 
+and then add the encoded original word order to the result.
+
+We can also go a slightly different way: change the order of words in the original dictionary, so that the final 3-word poems would 
+be more natural-sounding. By calculating the indexes of words encoded in 32 bits over the dictionary, we can generate a new 
+dictionary from the base one, by sorting only. Then we need to store the new word order in the dictionary for the reverse operation. 
+
+Thus, instead of: 
+
+[dictionary + bytes -> mnemonics],
+
+we will have:
+
+[dictionary] + [bytes] => [new dictionary] => [mnemonics] + [dictionary reordering map].
+
+We do not need to save all word mappings of the new dictionary and the base one, it will be enough to save only those that are used 
+in the encoding process. Thus, the process of encoding and decoding will not work with the base dictionary of words, 
+but with a modified one. During encoding, a dictionary map will be saved for the reverse operation.
+
+To work with natural language and change the word order from the base vocabulary, we can use ready-made LLMs and transfer learning.
+To use transfer learning in this case, one can take a pre-trained language model and fine-tune it to predict the correct word order 
+based on their meanings.
+
+In this way, it's possible to keep the beauty of using BEP39 technology, but make the process of remembering end mnemonics 
+more convenient.
+
+
+==================================================================================================================
+
+Project 3: Methods to guard against data loss
+
+Unfortunatelly I'm not experienced in FEC and dataloss protection problems, but I've done a little dataresearch about it.
+
+Due to limitations of values for M and N it is not possible to effectively use erasure coding technique to protection 
+against data loss. It's much better to use Fountain codes to overcome that limitations. They can generate a theoretically 
+infinite amount of encoded data, making them more flexible than traditional erasure codes. Fountain codes are able to do
+this by generating encoded data on the fly, without needing to know the exact number of blocks needed to recover the 
+original data.
+
+It is important to note that the flexibility of fountain codes does come with some limitations and tradeoffs. For example, 
+the encoding and decoding process can be computationally intensive, and the amount of encoded data generated 
+can be significantly larger than the original data. But due to that fact that password manager is not real-time application 
+(in some manner) it well for storing sensitive information like passwords, where low latency or real-time data processing 
+is not really required. 
+
+The best implementation of fountain codes technique is Luby transform (LT) code (https://en.wikipedia.org/wiki/Luby_transform_code). 
+I've found C++ lib "wirehair" ("https://github.com/catid/wirehair") and Python wrapper "pywirehair" (github.com/sz3/pywirehair).
+It's written in C++ and has complexity of O(N), so speed and overall effectiveness are at high level. Personally, I would start the 
+investigation with this library.
+
+
+==================================================================================================================
+
+Project 4: tracker
+
+This problem is somewhat known to me as I have an unfinished android app that allows me to create "bumps" on a road map while driving.
+The estimation algorithm runs at 20 hertz and uses gyroscope, magnetometer, and GPS data to collect data and then interpolate it along
+the path segment, since GPS updates are somewhat slower. In this way, you can create a road map relative to this vehicle. And you can 
+drive on the same road in different cars, ranging from a sports car to an SUV, with relatively reliable data. The only thing left 
+unfinished is the grouping of raw event data in a more convenient form, that is, somehow classifying the received data. I wrote the 
+project in 2013-2014 and at that time of the project I was not yet experienced in machine learning and neural networks. Over time, 
+it became clear that problems of this type can be solved using neural networks.
+
+I dare to assume that the raw data has enough information to create an accurate classifier. For example, timestamp, gyroscope, 
+magnetometer and gps data should be sufficient to solve that problem. Since this is timeseries data, we can use RNN, CNN, Transformer 
+or Autoencoder/VAE + Linear regression layer to solve this problem of classifying raw data packets into a finite list of classes. 
+Thus, the task is narrowed down to create and train for the classification of multivariate time series and make it available as a 
+external module or smtg.
+
+Unsupervised learning is not suitable for us here, since the data itself does not have a clear logical connection with each other, 
+such as words in sentences in NLP tasks. In our case, will need to create and mark the dataset manually for the best result. 
+That is, the first phase of creating this classifier will be the collection of data, and then from the markup. After creating a 
+dataset that describes all possible options for an event, be it walking/running/cycling/driving/flying. Then the model should be 
+trained, so it will find those complex heuristics for evaluating and classifying this or that event.
+
+If we have a classifier ready which from the array of time-series data [X_1, X_2, X_3, ..., X_n ] determines the final event class Y, 
+then it remains only to include this classifier in the application and use it as an external module.
+
+Unfortunately (or fortunately) I am a fan of Android, so I did not choose this task. Although it would be very interesting 
+to try to solve such a problem, since the problem is interesting, useful and the experience already allows it 
+(I have a project for cryptocurrencies where I train the above models for time series, but only for prediction).
+
+It is precisely because of the closeness of iOS and the transparency of Android that it is more convenient to develop 
+on the latter first in order to reduce the number of possible problems. And then you can always port to IOS.
+
+
+==================================================================================================================
+
+Project 5: japaneseNLP
+
+I am new to NLP problems, that is, I am familiar with the latest developments in this area, but I have never solved problems of 
+this kind, namely unsupervised learning.
+
+As i know to solve this problem, we need to divide the task into 2 stages:
+1. Transformation of complex sentences into a semantic hierarchy
+2. Translation of hierarchy elements into another language
+3. adding and romaji.
+
+We can do these computaion tasks sequentially using two different models, or we can combine the layers of the two models to preserve 
+the overall translation context. Or to use transfer learning with pretrained japanise-english LLM with some additional layers and
+fine-tunings.
+ 
+To be honest, this task was the most difficult for me, since my experience in creating and training models has no experience 
+in training "without a teacher"
+
