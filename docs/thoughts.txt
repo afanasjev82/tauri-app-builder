@@ -1,6 +1,6 @@
 [Initial thoughts]
 
-==================================================================================================================
+===============================================================================================================================
 
 Project 1: webclient
 
@@ -26,7 +26,7 @@ I also have several C/C++ projects in different areas. Therefore, Electron and R
 for studying. That's why I found this project useful and stick with it.
 
 
-==================================================================================================================
+===============================================================================================================================
 
 Project 2: passpoems
 
@@ -75,7 +75,7 @@ In this way, it's possible to keep the beauty of using BEP39 technology, but mak
 more convenient.
 
 
-==================================================================================================================
+===============================================================================================================================
 
 Project 3: Methods to guard against data loss
 
@@ -99,7 +99,7 @@ It's written in C++ and has complexity of O(N), so speed and overall effectivene
 investigation with this library.
 
 
-==================================================================================================================
+===============================================================================================================================
 
 Project 4: tracker
 
@@ -134,7 +134,7 @@ It is precisely because of the closeness of iOS and the transparency of Android 
 on the latter first in order to reduce the number of possible problems. And then you can always port to IOS.
 
 
-==================================================================================================================
+===============================================================================================================================
 
 Project 5: japaneseNLP
 
@@ -153,3 +153,16 @@ fine-tunings.
 To be honest, this task was the most difficult for me, since my experience in creating and training models has no experience 
 in training "without a teacher"
 
+===============================================================================================================================
+
+Selected project worklogs are located in following repos in /docs folders:
+* https://github.com/afanasjev82/tauri-app-builder/blob/master/docs/worklog.txt
+* https://github.com/afanasjev82/tauri-app-vanilla/blob/master/docs/worklog.txt
+
+PS. This GitHub account is not my primary, for everyday preffer using Bitbucket:
+* https://bitbucket.org/rcinter/
+* https://bitbucket.org/afanasjev/
+
+Initially, I used Mercurial for my repositories, but recently Bitbucket stopped supporting it and 75% of my projects were 
+removed from the account, but are available to me as an archive, which I slowly convert to git and re-upload to the account. 
+Plus, some of the projects are private at the request of clients. For these reasons, I have few visible projects on my account.

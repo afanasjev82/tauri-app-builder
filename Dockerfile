@@ -24,4 +24,3 @@ WORKDIR /app/src-tauri
 
 # Set the entrypoint to pass the source code location as an argument
 ENTRYPOINT [ "cargo", "build", "--release", "--target", "x86_64-pc-windows-gnu", "--target-dir", "/app/build" ]
-

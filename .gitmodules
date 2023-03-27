@@ -1,0 +1,3 @@
+[submodule "tauri-app-vanilla"]
+	path = tauri-app-vanilla
+	url = https://github.com/afanasjev82/tauri-app-vanilla
