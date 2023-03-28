@@ -47,11 +47,16 @@ To compile example Tauri project `tauri-app-vanilla` using `tauri-app-builder` i
    ```
 
    This will clone `tauri-app-vanilla` example Tauri application source into `./tauri-app-vanilla`.
+   If not successfull (I sometime encounter that issue) clone example repo manually by running following command in the root of this repository:
+
+   ```bash
+   git clone https://github.com/afanasjev82/tauri-app-vanilla.git
+   ```
 
 2. Build `tauri-app-vanilla` Windows executable using our `tauri-app-builder`:
 
    ```bash
-   docker run --rm $(pwd)/tauri-app-vanilla:/app tauri-app-builder
+   docker run --rm /path/to/tauri-app-vanilla:/app tauri-app-builder
    ```
 
    And then you compiled executable will wait you in the `./tauri-app-vanilla/build/x86_64-pc-windows-gnu/release/tauri-app-vanilla.exe` folder.
