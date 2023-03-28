@@ -13,7 +13,7 @@ And also this repo demonstrates how to locally compile lightweight [Tauri](https
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/afanasjev82/tauri-app-builder.git
+    git clone --recursive https://github.com/afanasjev82/tauri-app-builder.git
     cd ./tauri-app-builder
     ```
 
