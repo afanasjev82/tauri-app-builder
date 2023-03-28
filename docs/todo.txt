@@ -3,4 +3,4 @@
 + 2. cleanup worklog
 
 docker build -t afanasjev/tauri-app-builder:latest .
-docker run -v E:\Work\JaanTallinn\tauri-web-client\tauri-app-vanilla\release:/app/release afanasjev/tauri-app-builder:latest
+docker run -v E:\tauri-app-vanilla\release:/app/release afanasjev/tauri-app-builder:latest
