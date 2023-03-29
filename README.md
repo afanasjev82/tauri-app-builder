@@ -42,8 +42,7 @@ To compile example Tauri project `tauri-app-vanilla` using `tauri-app-builder` i
 1. (optional) If repo was cloned without `--recursive`, initialize repo's submodules
 
    ```bash
-   git submodule init
-   git submodule update
+   git submodule update --init
    ```
 
    This will clone `tauri-app-vanilla` example Tauri application source into `./tauri-app-vanilla`.
