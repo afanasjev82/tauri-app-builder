@@ -1,5 +1,5 @@
 # Start with a base image that includes Rust and Cargo
-FROM rust:alpine
+FROM --platform=linux/amd64 rust:alpine
 
 # Updating app deps 
 RUN apk update && \ 
@@ -22,8 +22,14 @@ RUN rustup set default-host x86_64-pc-windows-gnu
 # Create a sharable volume for the installed crates and app folder
 VOLUME /app
 
-# Set working dir to tauri project
-WORKDIR /app/src-tauri
+# Copy WebView2Loader.dll into the container
+RUN mkdir -p /opt/webview2
+COPY WebView2Loader.dll /opt/webview2/WebView2Loader.dll
 
-# Set the entrypoint to pass the source code location as an argument
-ENTRYPOINT [ "cargo", "build", "--release", "--target", "x86_64-pc-windows-gnu", "--target-dir", "/app/build", "--color", "always" ]
+# Copy the entrypoint script into the container
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Execute build step
+#ENTRYPOINT [ "cargo", "build", "--release", "--target", "x86_64-pc-windows-gnu", "--target-dir", "/app/build", "--color", "always" ]
+ENTRYPOINT ["docker-entrypoint.sh"]

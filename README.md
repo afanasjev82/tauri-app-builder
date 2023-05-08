@@ -55,15 +55,10 @@ To compile example Tauri project `tauri-app-vanilla` using `tauri-app-builder` i
 2. Build `tauri-app-vanilla` Windows executable using our `tauri-app-builder`:
 
    ```bash
-   docker run --rm /path/to/tauri-app-vanilla:/app tauri-app-builder
+   docker run --rm -v ./tauri-app-vanilla:/app tauri-app-builder
    ```
 
    And then you compiled executable will wait you in the `./tauri-app-vanilla/build/x86_64-pc-windows-gnu/release/tauri-app-vanilla.exe` folder.
-
-## Known limitations
-
-If during executable startup you occured an error like "The code execution cannot proceed because WebView2Loader.dll was not found".
-Please copy loader from `./assets/WebView2Loader.dll` or download it from [here](https://www.dll-files.com/download/498c7875a2890b90eec37f02c7ac3395/webview2loader.dll.html?c=QktwSnY5bHlsVklqQ1ErQVZYRXVmUT09), extract it and place it alogside compiled executable. In our example case copy it to `./tauri-app-vanilla/build/x86_64-pc-windows-gnu/release/` folder
 
 ## Recommended IDE Setup
 
