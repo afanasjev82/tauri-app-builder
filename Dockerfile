@@ -1,6 +1,9 @@
 # Start with a base image that includes Rust and Cargo
 FROM --platform=linux/amd64 rust:alpine
 
+# Set the build TARGET environment variable
+ENV TARGET="x86_64-pc-windows-gnu"
+
 # Updating app deps 
 RUN apk update && \ 
 	apk add --no-cache --update \
@@ -11,13 +14,13 @@ RUN apk update && \
 	mingw-w64-gcc
 
 # Install toolchain
-RUN rustup toolchain install --force-non-host stable-x86_64-pc-windows-gnu
+RUN rustup toolchain install --force-non-host stable-$TARGET
 
 # Install build target
-RUN rustup target add x86_64-pc-windows-gnu 
+RUN rustup target add $TARGET
 
 # Set GNU compiler as default
-RUN rustup set default-host x86_64-pc-windows-gnu
+RUN rustup set default-host $TARGET
 
 # Create a sharable volume for the installed crates and app folder
 VOLUME /app
@@ -31,5 +34,4 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Execute build step
-#ENTRYPOINT [ "cargo", "build", "--release", "--target", "x86_64-pc-windows-gnu", "--target-dir", "/app/build", "--color", "always" ]
 ENTRYPOINT ["docker-entrypoint.sh"]
